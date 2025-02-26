@@ -17,7 +17,7 @@ This project is released under the [MIT License](LICENSE).
 - ROS2 (Ubuntu 22.04)
 - Any additional Python libraries
 
-### 3.2 Build
+### 3.2 Build and run
 
 ```bash
 xhost +
@@ -35,7 +35,7 @@ colcon build
 source install/setup.bash
 ```
 #### Task 1:
-#### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 xhost +
 sudo docker container start comp0244_unitree
@@ -45,8 +45,29 @@ cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
-#### Terminal 2: Run the task
+##### Terminal 2: Run the task
 ```bash
-ros2 launch cw1_team_3 run_solution_task_1.launch.py
+ros2 run edge_follower edge_follower
 ```
+
+### Task 2:
+
+
+
+## 4. Working time 
+- Task 1: 20hs
+- Task 2: 20hs
+- Task 3: 0h
+
+## 5. Percentage
+- Zhengtong Zhang 100%
+- Kai Gan 100%
+- Renkai Liu 100%
+
+## One page report
+- Objective
+
+
+
+
 
