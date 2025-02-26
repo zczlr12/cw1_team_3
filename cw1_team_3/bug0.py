@@ -36,7 +36,7 @@ class Bug0(Node):
         self.orientation_target = None
         
         # Publishers
-        self.waypoint_pub = self.create_publisher(Pose2D, 'local_waypoint', 10)
+        self.waypoint_pub = self.create_publisher(Pose2D, 'waypoint', 10)
         self.waypoint_marker_pub = self.create_publisher(Marker, 'current_waypoint', 10)
         self.edge_marker_pub = self.create_publisher(Marker, 'detected_edges', 10)
         
@@ -54,7 +54,7 @@ class Bug0(Node):
             10)
         self.waypoint_sub = self.create_subscription(
             Pose2D,
-            'waypoint',
+            'goal',
             self.waypoint_callback,
             10
         )
@@ -197,10 +197,12 @@ class Bug0(Node):
 
         if np.dot(edge_to_robot, robot_to_target) > 0:
             # Heading towards the target
+            self.get_logger().info('Heading straight towards the goal')
             waypoint = self.transform_to_camera_init(np.array([self.x_target, self.y_target]))
 
         else:
             # Following the edge
+            self.get_logger().info('Following the edge of the obstacle')
         
             # Determine cw direction using cross product
             cross_z = edge_direction[0] * to_robot[1] - edge_direction[1] * to_robot[0]

@@ -30,7 +30,7 @@ class ObstacleFollower(Node):
         self.current_edges = []  # List of (start_point, end_point) tuples
         
         # Publishers
-        self.waypoint_pub = self.create_publisher(Pose2D, 'local_waypoint', 10)
+        self.waypoint_pub = self.create_publisher(Pose2D, 'waypoint', 10)
         self.waypoint_marker_pub = self.create_publisher(Marker, 'current_waypoint', 10)
         self.edge_marker_pub = self.create_publisher(Marker, 'detected_edges', 10)
         
