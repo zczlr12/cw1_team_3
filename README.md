@@ -47,11 +47,14 @@ ros2 launch robot_launch.launch.py
 
 ##### Terminal 2: Run the task
 ```bash
-ros2 run edge_follower edge_follower
+ros2 launch cw1_team_3 run_solution_task_<task number>.launch.py
 ```
 
-### Task 2:
-
+### Terminal 3: 
+```bash
+ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
+```
+this is goal point, if you want to run bug0
 
 
 ## 4. Working time 
@@ -65,7 +68,6 @@ ros2 run edge_follower edge_follower
 - Renkai Liu 100%
 
 ## One page report
-- Objective
 
 
 
