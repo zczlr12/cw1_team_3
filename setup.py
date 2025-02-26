@@ -23,7 +23,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'cw1_team_3 = cw1_team_3.obstacle_follower:main'
+            'obstacle_follower = cw1_team_3.obstacle_follower:main',
+            'bug0 = cw1_team_3.bug0:main',
         ],
     },
 )

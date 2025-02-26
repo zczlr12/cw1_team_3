@@ -6,6 +6,6 @@ def generate_launch_description():
     return launch.LaunchDescription([
         launch_ros.actions.Node(
             package='cw1_team_3',
-            executable='obstacle_follower',
-            name='obstacle_follower'),
+            executable='bug0',
+            name='bug0'),
     ])

@@ -9,18 +9,15 @@ from geometry_msgs.msg import Pose2D, Point, Vector3
 from visualization_msgs.msg import Marker
 from std_msgs.msg import ColorRGBA
 
-class ObstacleFollower(Node):
+
+class Bug0(Node):
     def __init__(self):
-        super().__init__('obstacle_follower')
-        
+        super().__init__('bug0')
+
         # Constants
         self.SAFETY_MARGIN = 1.0  # meters
         self.INCREMENT_DISTANCE = 0.7  # meters
         self.UPDATE_RATE = 0.5  # seconds
-
-        # Flags
-        self.sleep = False
-        self.counter = 0  # Counter to sleep for 1 second
         
         # State variables
         self.current_x = 0.0
@@ -28,6 +25,15 @@ class ObstacleFollower(Node):
         self.current_orientation = 0.0
         self.is_odom_received = False
         self.current_edges = []  # List of (start_point, end_point) tuples
+        self.sleep = False
+        self.counter = 0  # Counter to sleep for 1 second
+        self.is_arrive_waypoint = True
+
+        # Target waypoint (x, y, theta)
+        # Initially, set them to 0. They will be updated by /waypoint subscriber.
+        self.x_target = None
+        self.y_target = None
+        self.orientation_target = None
         
         # Publishers
         self.waypoint_pub = self.create_publisher(Pose2D, 'local_waypoint', 10)
@@ -46,11 +52,17 @@ class ObstacleFollower(Node):
             'local_map_lines',
             self.line_callback,
             10)
+        self.waypoint_sub = self.create_subscription(
+            Pose2D,
+            'waypoint',
+            self.waypoint_callback,
+            10
+        )
             
         # Timer
         self.timer = self.create_timer(self.UPDATE_RATE, self.timer_callback)
         
-        self.get_logger().info('Obstacle Follower node initialized')
+        self.get_logger().info('Bug0 node initialized')
 
     def odom_callback(self, msg):
         """Update current robot pose (x,y,theta) from odometry (in odom frame)"""
@@ -63,18 +75,6 @@ class ObstacleFollower(Node):
         siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
         cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
         self.current_orientation = math.atan2(siny_cosp, cosy_cosp)
-
-    def transform_to_camera_init(self, point):
-        """Transform a point from livox to camera_init frame, which is our fixed world frame"""
-        # Rotation matrix
-        c = math.cos(self.current_orientation)
-        s = math.sin(self.current_orientation)
-        
-        # Transform point
-        x = point[0] * c - point[1] * s + self.current_x
-        y = point[0] * s + point[1] * c + self.current_y
-        
-        return np.array([x, y])
 
     def transform_to_base_link(self, point):
         """Transform a point from camera_init to livox frame"""
@@ -91,6 +91,18 @@ class ObstacleFollower(Node):
         y = dx * s + dy * c
         
         return np.array([x, y])
+
+    def transform_to_camera_init(self, point):
+        """Transform a point from livox to camera_init frame"""
+        # Rotation matrix
+        c = math.cos(self.current_orientation)
+        s = math.sin(self.current_orientation)
+        
+        # Transform point
+        x = point[0] * c - point[1] * s + self.current_x
+        y = point[0] * s + point[1] * c + self.current_y
+        
+        return np.array([x, y])
     
     def line_callback(self, msg):
         """Process incoming line segments"""
@@ -104,11 +116,28 @@ class ObstacleFollower(Node):
         self.current_edges = []
         for i in range(len(points) - 1):
             self.current_edges.append((points[i], points[i+1]))
+    
+    def waypoint_callback(self, msg: Pose2D):
+        """
+        Updates the target waypoint when a new message is received.
+        """
+        if self.x_target==None or abs(self.x_target-msg.x) > 0.2 or abs(self.y_target-msg.y) > 0.2 or abs(self.orientation_target-msg.theta) > 0.2:
+            self.is_arrive_waypoint = False
+        else:
+            self.is_arrive_waypoint = True
+
+        self.x_target = msg.x
+        self.y_target = msg.y
+        self.orientation_target = msg.theta
+        self.get_logger().info(
+            f"Received new waypoint: x={self.x_target}, y={self.y_target}, orientation={self.orientation_target}. current state: x={self.current_x}, y={self.current_y}, orientation={self.current_orientation}"
+        )
 
     def find_next_waypoint(self):
         """Find closest edge and calculate next waypoint"""
         if not self.current_edges:
-            return None
+            # Heading towards the target
+            return self.transform_to_camera_init(np.array([self.x_target, self.y_target]))
             
         # Robot is at origin in livox frame
         robot_pos = np.array([0.0, 0.0])
@@ -162,77 +191,87 @@ class ObstacleFollower(Node):
         
         # Vector from closest point to robot
         to_robot = robot_pos - closest_point
-        
-        # Determine cw direction using cross product
-        cross_z = edge_direction[0] * to_robot[1] - edge_direction[1] * to_robot[0]
-        moving_forward = cross_z > 0
-        
-        # Move along edges to find increment point
-        current_index = closest_edge_index
-        increment_left = self.INCREMENT_DISTANCE
-        current_point = closest_point
-        
-        if moving_forward:
-            while increment_left > 0 and current_index < len(self.current_edges):
-                current_edge = self.current_edges[current_index]
-                start, end = current_edge
-                remaining_distance = np.linalg.norm(end - current_point)
-                
-                if increment_left <= remaining_distance:
-                    # We can reach our point on this edge
-                    edge_direction = (end - start) / np.linalg.norm(end - start)
-                    current_point = current_point + edge_direction * increment_left
-                    break
-                else:
-                    # Move to next edge
-                    increment_left -= remaining_distance
-                    current_index += 1
-                    if current_index >= len(self.current_edges):
-                        # If we reach the end, go beyond the last point by 0.5m
-                        current_index = len(self.current_edges) - 1
-                        edge_direction = (end - start) / np.linalg.norm(end - start)
-                        current_point = self.current_edges[current_index][1] + edge_direction * 0.5
-                        self.sleep = True
-                        break
-        else:
-            while increment_left > 0 and current_index >= 0:
-                current_edge = self.current_edges[current_index]
-                start, end = current_edge
-                remaining_distance = np.linalg.norm(current_point - start)
-                
-                if increment_left <= remaining_distance:
-                    # We can reach our point on this edge
-                    edge_direction = (end - start) / np.linalg.norm(end - start)
-                    current_point = current_point - edge_direction * increment_left
-                    break
-                else:
-                    # Move to previous edge
-                    increment_left -= remaining_distance
-                    current_index -= 1
-                    if current_index < 0:
-                        # If we reach the start, stay at the first point
-                        current_index = 0
-                        current_point = self.current_edges[current_index][0]
-                        break
 
-        # Store the incremented point (green dot)
-        self.incremented_point = current_point
+        edge_to_robot = self.transform_to_base_link(to_robot)
+        robot_to_target = np.array([self.x_target - self.current_x, self.y_target - self.current_y])
+
+        if np.dot(edge_to_robot, robot_to_target) > 0:
+            # Heading towards the target
+            waypoint = self.transform_to_camera_init(np.array([self.x_target, self.y_target]))
+
+        else:
+            # Following the edge
         
-        # Get the edge direction at the incremented point
-        current_edge = self.current_edges[current_index]
-        start, end = current_edge
-        edge_direction = (end - start) / np.linalg.norm(end - start)
+            # Determine cw direction using cross product
+            cross_z = edge_direction[0] * to_robot[1] - edge_direction[1] * to_robot[0]
+            moving_forward = cross_z > 0
+
+            # Move along edges to find increment point
+            current_index = closest_edge_index
+            increment_left = self.INCREMENT_DISTANCE
+            current_point = closest_point
+
+            if moving_forward:
+                while increment_left > 0 and current_index < len(self.current_edges):
+                    current_edge = self.current_edges[current_index]
+                    start, end = current_edge
+                    remaining_distance = np.linalg.norm(end - current_point)
+
+                    if increment_left <= remaining_distance:
+                        # We can reach our point on this edge
+                        edge_direction = (end - start) / np.linalg.norm(end - start)
+                        current_point = current_point + edge_direction * increment_left
+                        break
+                    else:
+                        # Move to next edge
+                        increment_left -= remaining_distance
+                        current_index += 1
+                        if current_index >= len(self.current_edges):
+                            # If we reach the end, go beyond the last point by 0.5m
+                            current_index = len(self.current_edges) - 1
+                            edge_direction = (end - start) / np.linalg.norm(end - start)
+                            current_point = self.current_edges[current_index][1] + edge_direction * 0.5
+                            self.sleep = True
+                            break
+            else:
+                while increment_left > 0 and current_index >= 0:
+                    current_edge = self.current_edges[current_index]
+                    start, end = current_edge
+                    remaining_distance = np.linalg.norm(current_point - start)
+
+                    if increment_left <= remaining_distance:
+                        # We can reach our point on this edge
+                        edge_direction = (end - start) / np.linalg.norm(end - start)
+                        current_point = current_point - edge_direction * increment_left
+                        break
+                    else:
+                        # Move to previous edge
+                        increment_left -= remaining_distance
+                        current_index -= 1
+                        if current_index < 0:
+                            # If we reach the start, stay at the first point
+                            current_index = 0
+                            current_point = self.current_edges[current_index][0]
+                            break
+
+            # Store the incremented point (green dot)
+            self.incremented_point = current_point
         
-        # Calculate perpendicular vector (rotate edge_direction 90 degrees)
-        perpendicular = np.array([-edge_direction[1], edge_direction[0]])
-        
-        # Check which side the robot is on
-        to_robot = robot_pos - current_point
-        if np.dot(perpendicular, to_robot) < 0:
-            perpendicular = -perpendicular  # Flip if needed to point toward robot's side
-            
-        # Calculate waypoint by projecting perpendicular to the edge
-        waypoint = current_point + perpendicular * self.SAFETY_MARGIN
+            # Get the edge direction at the incremented point
+            current_edge = self.current_edges[current_index]
+            start, end = current_edge
+            edge_direction = (end - start) / np.linalg.norm(end - start)
+
+            # Calculate perpendicular vector (rotate edge_direction 90 degrees)
+            perpendicular = np.array([-edge_direction[1], edge_direction[0]])
+
+            # Check which side the robot is on
+            to_robot = robot_pos - current_point
+            if np.dot(perpendicular, to_robot) < 0:
+                perpendicular = -perpendicular  # Flip if needed to point toward robot's side
+
+            # Calculate waypoint by projecting perpendicular to the edge
+            waypoint = current_point + perpendicular * self.SAFETY_MARGIN
         
         return waypoint
 
@@ -310,33 +349,37 @@ class ObstacleFollower(Node):
         if not self.is_odom_received:
             return
         
-        # Sleep for 1 second
-        if self.sleep:
-            if self.counter > 1:
-                self.sleep = False
-                self.counter = 0
-            self.counter += 1
-        else:
-            # Calculate next waypoint
-            next_waypoint = self.find_next_waypoint()
+        next_waypoint = None
+        
+        if not self.is_arrive_waypoint:
+            # Sleep for 1 second
+            if self.sleep:
+                if self.counter > 1:
+                    self.sleep = False
+                    self.counter = 0
+                    return
+                self.counter += 1
+            else:
+                # Calculate next waypoint
+                next_waypoint = self.find_next_waypoint()
 
-            # Publish waypoint if valid
-            if next_waypoint is not None:
-                waypoint_msg = Pose2D()
-                waypoint_camera_init = self.transform_to_camera_init(next_waypoint)
-                waypoint_msg.x = float(waypoint_camera_init[0])
-                waypoint_msg.y = float(waypoint_camera_init[1])
-                waypoint_msg.theta = self.current_orientation  # Keep current orientation
+        # Publish waypoint if valid
+        if next_waypoint is not None:
+            waypoint_msg = Pose2D()
+            waypoint_camera_init = self.transform_to_camera_init(next_waypoint)
+            waypoint_msg.x = float(waypoint_camera_init[0])
+            waypoint_msg.y = float(waypoint_camera_init[1])
+            waypoint_msg.theta = self.current_orientation  # Keep current orientation
 
-                self.waypoint_pub.publish(waypoint_msg)
+            self.waypoint_pub.publish(waypoint_msg)
 
-            # Publish visualizations
-            self.publish_visualizations(next_waypoint)
+        # Publish visualizations
+        self.publish_visualizations(next_waypoint)
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = ObstacleFollower()
+    node = Bug0()
     
     try:
         rclpy.spin(node)
