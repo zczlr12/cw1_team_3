@@ -2,6 +2,26 @@
 
 ---
 
+## 1. License
+This project is released under the [MIT License](LICENSE). 
+
+## 2. Authors
+- **Zhengtong Zhang**
+- **Kai Gan**
+- **RenKai Liu**
+
+## 3. Build and Run Instructions
+
+### 3.1 Dependencies
+- Python 3.3
+- ROS2 (Ubuntu 22.04)
+- Any additional Python libraries
+
+### 3.2 Build
+
+
+
+
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
 ```bash
 cd /home/$USER/comp0244_ws/comp0244-go2
@@ -61,7 +81,7 @@ ros2 launch cw1_team_3 run_solution_task_<number of task>.launch.py
 
 # MIT License
 
-Copyright (c) 2025 Renkai Liu
+Copyright (c) 2025 Renkai Liu, Kai Gan, Zhengtong Zhang
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
