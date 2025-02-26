@@ -20,12 +20,6 @@ This project is released under the [MIT License](LICENSE).
 ### 3.2 Build
 Open the first terminal to pull recursively all repos, re-compile, and load the gazebo environment:
 ```bash
-
-
-
-
-
-
 cd /home/$USER/comp0244_ws/comp0244-go2
 git pull --recurse-submodules
 cd /home/$USER/comp0244_ws/comp0244-go2/src/FAST_LIO
@@ -56,8 +50,8 @@ cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
-
-### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+#### Task 1:
+#### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 xhost +
 sudo docker container start comp0244_unitree
@@ -67,16 +61,8 @@ cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
-### Terminal 2: Publish a waypoint {x, y, theta} (w.r.t the odom frame)
+#### Terminal 2: Run the task
 ```bash
-sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /waypoint geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
-Ctrl+C
-```
-
-### Terminal 2: Run the task
-```bash
-ros2 launch cw1_team_3 run_solution_task_<number of task>.launch.py
+ros2 launch cw1_team_3 run_solution_task_1.launch.py
 ```
 
