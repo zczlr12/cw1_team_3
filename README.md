@@ -57,15 +57,15 @@ ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 
 this is goal point, if you want to run bug0
 
 
-## 4. Working time 
-- Task 1: 20hs
-- Task 2: 20hs
-- Task 3: 0h
+## 4. Team Contribution Summary
 
-## 5. Percentage
-- Zhengtong Zhang 100%
-- Kai Gan 100%
-- Renkai Liu 100%
+| Task  | Renkai Liu (hrs)    | Kai Gan (hrs)   | Zhengtong Zhang (hrs)  | Total (hrs) |
+|-------|------------------|------------------|------------------|------------|
+| Task 1 | 35       | 15      | 25          | 95         |
+| Task 2 | 30     | 20       | 20     |      70    |
+| Task 3 | 5       | 30           | 30      | 65        |
+| **Total** | **70**  | **80**  | **75**  | **230**     |
+
 
 ## One page report
 
