@@ -109,10 +109,10 @@ This is goal point you set.
 
 | Task  | Renkai Liu (hrs)    | Kai Gan (hrs)   | Zhengtong Zhang (hrs)  | Total (hrs) |
 |-------|------------------|------------------|------------------|------------|
-| Task 1 | 35       | 15      | 25          | 95         |
+| Task 1 | 35       | 20     | 20          | 85         |
 | Task 2 | 30     | 20       | 20     |      70    |
 | Task 3 | 5       | 30           | 30      | 65        |
-| **Total** | **70**  | **80**  | **75**  | **230**     |
+| **Total** | **70**  | **70**  | **70**  | **230**     |
 
 ## 5. Percentage
 -- Renkai Liu -- 35%
