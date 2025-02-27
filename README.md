@@ -115,9 +115,9 @@ This is goal point you set.
 | **Total** | **70**  | **70**  | **70**  | **230**     |
 
 ## 5. Percentage
--- Renkai Liu -- 35%
--- Kai Gan -- 32.5%
--- Zhengtong Zhang -- 32.5% 
+- **Renkai Liu** -- 35%
+- **Kai Gan** -- 32.5%
+- **Zhengtong Zhang** -- 32.5% 
 
 ## 6. One page report
 ### Task 1: Obstacle Follower
