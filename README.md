@@ -23,13 +23,13 @@ Copyright (C) 2025 Zhengtong Zhang, Kai Gan, Renkai Liu except where specified
 - Any additional Python libraries
 
 ### 3.2 Build and run
-
+Open the docker
 ```bash
 xhost +
 sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 ```
-
+Build the package
 ```bash
 source /opt/ros/humble/setup.bash
 sudo apt-get install ros-humble-rviz2 ros-humble-turtle-tf2-py ros-humble-tf2-ros ros-humble-tf2-tools
@@ -39,7 +39,7 @@ cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
-#### Task 1:
+#### Task 1: Obstacle Follower
 ##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 xhost +
@@ -52,17 +52,60 @@ ros2 launch robot_launch.launch.py
 
 ##### Terminal 2: Run the task
 ```bash
-ros2 launch cw1_team_3 run_solution_task_<task number>.launch.py
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
+ros2 launch cw1_team_3 run_solution_task_1.launch.py
 ```
 
-### Terminal 3: 
+#### Task 2: Bug0
+
+##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2/scripts
+ros2 launch robot_launch.launch.py
+```
+##### Terminal 2: Run the task
+```bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
+ros2 launch cw1_team_3 run_solution_task_2.launch.py
+```
+
+### Terminal 3: Set the goal point
 ```bash
 ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
 ```
-this is goal point, if you want to run bug0
+This is goal point you set.
+
+#### Task 3: Bug1
+##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2/scripts
+ros2 launch robot_launch.launch.py
+```
+
+#### Terminal 2: Run the task
+```bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
+ros2 launch cw1_team_3 run_solution_task_3.launch.py
+```
+### Terminal 3: Set the goal point
+```bash
+ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
+```
+This is goal point you set.
 
 
-## 4. Team Contribution Summary
+## 4. Working time Summary
 
 | Task  | Renkai Liu (hrs)    | Kai Gan (hrs)   | Zhengtong Zhang (hrs)  | Total (hrs) |
 |-------|------------------|------------------|------------------|------------|
@@ -71,8 +114,24 @@ this is goal point, if you want to run bug0
 | Task 3 | 5       | 30           | 30      | 65        |
 | **Total** | **70**  | **80**  | **75**  | **230**     |
 
+## 5. Percentage
+-- Renkai Liu -- 35%
+-- Kai Gan -- 32.5%
+-- Zhengtong Zhang -- 32.5% 
 
-## One page report
+## 6. One page report
+### Task 1: Obstacle Follower
+In this task, we need to consider many aspects. We have made modifications to the edge follower in the source code. The original code finds the nearest point on the edge to the robot through projection, then moves forward along the edge direction. It switches to the next edge if it goes beyond the current edge. The direction is clockwise. And it is only suitable for circles because of the dot product of the edge direction and the robot direction.
+Therefore, based on this step, we modified the direction of cross_z to allow counterclockwise rotation. Additionally, we introduced Exponential Smoothing to make the robot dog's movement more stable. To enable the robot to adapt to more obstacles, we added rectangular and concave obstacles. When the robot reaches a corner, it adds an overshoot to the next waypoint, allowing it to detect the edge on the other side. If the robot gets too close to the edge, it returns to the previous waypoint. This algorithm is applicable to both concave and rectangular obstacles.
+
+### Task 2: Bug0
+
+### Task 3: Bug1
+
+
+
+
+
 
 
 
