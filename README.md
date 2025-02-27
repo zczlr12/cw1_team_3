@@ -122,6 +122,7 @@ This is goal point you set.
 ## 6. One page report
 ### Task 1: Obstacle Follower
 In this task, we need to consider many aspects. We have made modifications to the edge follower in the source code. The original code finds the nearest point on the edge to the robot through projection, then moves forward along the edge direction. It switches to the next edge if it goes beyond the current edge. The direction is clockwise. And it is only suitable for circles because of the dot product of the edge direction and the robot direction.
+
 Therefore, based on this step, we modified the direction of cross_z to allow counterclockwise rotation. Additionally, we introduced Exponential Smoothing to make the robot dog's movement more stable. To enable the robot to adapt to more obstacles, we added rectangular and concave obstacles. When the robot reaches a corner, it adds an overshoot to the next waypoint, allowing it to detect the edge on the other side. If the robot gets too close to the edge, it returns to the previous waypoint. This algorithm is applicable to both concave and rectangular obstacles.
 
 ### Task 2: Bug0
