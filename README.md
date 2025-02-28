@@ -32,7 +32,6 @@ sudo docker exec -it comp0244_unitree /bin/bash
 Build the package
 ```bash
 source /opt/ros/humble/setup.bash
-sudo apt-get install ros-humble-rviz2 ros-humble-turtle-tf2-py ros-humble-tf2-ros ros-humble-tf2-tools
 cd /usr/app/comp0244_ws
 cd comp0244-go2/src/livox_ros_driver2 && ./build.sh humble
 cd /usr/app/comp0244_ws/comp0244-go2
@@ -42,8 +41,6 @@ source install/setup.bash
 #### Task 1: Obstacle Follower
 ##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 cd /usr/app/comp0244_ws/comp0244-go2/scripts
@@ -52,8 +49,6 @@ ros2 launch robot_launch.launch.py
 
 ##### Terminal 2: Run the task
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
@@ -64,8 +59,6 @@ ros2 launch cw1_team_3 run_solution_task_1.launch.py
 
 ##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 cd /usr/app/comp0244_ws/comp0244-go2/scripts
@@ -73,8 +66,6 @@ ros2 launch robot_launch.launch.py
 ```
 ##### Terminal 2: Run the task
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
@@ -83,8 +74,6 @@ ros2 launch cw1_team_3 run_solution_task_2.launch.py
 
 ### Terminal 3: Set the goal point
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
@@ -95,8 +84,6 @@ This is goal point you set.
 #### Task 3: Bug1
 ##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 cd /usr/app/comp0244_ws/comp0244-go2/scripts
@@ -105,8 +92,6 @@ ros2 launch robot_launch.launch.py
 
 #### Terminal 2: Run the task
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
@@ -114,8 +99,6 @@ ros2 launch cw1_team_3 run_solution_task_3.launch.py
 ```
 ### Terminal 3: Set the goal point
 ```bash
-xhost +
-sudo docker container start comp0244_unitree
 sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
