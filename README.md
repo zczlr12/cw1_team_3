@@ -126,6 +126,9 @@ In this task, we need to consider many aspects. We have made modifications to th
 Therefore, based on this step, we modified the direction of cross_z to allow counterclockwise rotation. Additionally, we introduced Exponential Smoothing to make the robot dog's movement more stable. To enable the robot to adapt to more obstacles, we added rectangular and concave obstacles. When the robot reaches a corner, it adds an overshoot to the next waypoint, allowing it to detect the edge on the other side. If the robot gets too close to the edge, it returns to the previous waypoint. This algorithm is applicable to both concave and rectangular obstacles.
 
 ### Task 2: Bug0
+Based on the obstacle follower, we calculate the vector from the robot to the goal. By taking the dot product of this vector with the vector from the edge point to the robot, we determine whether the robot will collide with an obstacle while moving toward the goal.
+
+If the dot product is greater than or equal to 0, meaning the angle is less than 90 degrees, the robot moves directly toward the goal since the waypoint does not pass through the obstacle. Otherwise, the robot navigates around the obstacle until the dot product becomes greater than or equal to 0 again.
 
 ### Task 3: Bug1
 
