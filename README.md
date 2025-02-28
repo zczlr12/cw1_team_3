@@ -128,6 +128,7 @@ Based on the obstacle follower, we calculate the vector from the robot to the go
 If the dot product is greater than or equal to 0, meaning the angle is less than 90 degrees, the robot moves directly toward the goal since the waypoint does not pass through the obstacle. Otherwise, the robot navigates around the obstacle until the dot product becomes greater than or equal to 0 again.
 
 ### Task 3: Bug1
+Building on Bug0, we added a waypoints history and calculated the distance from each waypoint to the goal. As the robot navigates around the obstacle, it keeps track of these waypoints. After completing a full loop around the obstacle, it identifies the waypoint closest to the goal and returns to that recorded position.
 
 
 
