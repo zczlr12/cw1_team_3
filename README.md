@@ -74,7 +74,7 @@ ros2 launch cw1_team_3 run_solution_task_2.launch.py
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
+ros2 topic pub /goal geometry_msgs/Pose2D "{x: -2.0, y: 3.0, theta: 0.0}" -r 1
 ```
 This is goal point you set.
 
