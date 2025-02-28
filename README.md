@@ -52,6 +52,9 @@ ros2 launch robot_launch.launch.py
 
 ##### Terminal 2: Run the task
 ```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_1.launch.py
@@ -70,6 +73,9 @@ ros2 launch robot_launch.launch.py
 ```
 ##### Terminal 2: Run the task
 ```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_2.launch.py
@@ -77,6 +83,11 @@ ros2 launch cw1_team_3 run_solution_task_2.launch.py
 
 ### Terminal 3: Set the goal point
 ```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
 ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
 ```
 This is goal point you set.
@@ -94,12 +105,20 @@ ros2 launch robot_launch.launch.py
 
 #### Terminal 2: Run the task
 ```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
 cd /usr/app/comp0244_ws/comp0244-go2
 source install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_3.launch.py
 ```
 ### Terminal 3: Set the goal point
 ```bash
+xhost +
+sudo docker container start comp0244_unitree
+sudo docker exec -it comp0244_unitree /bin/bash
+cd /usr/app/comp0244_ws/comp0244-go2
+source install/setup.bash
 ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 1
 ```
 This is goal point you set.
