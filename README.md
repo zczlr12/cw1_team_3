@@ -38,8 +38,8 @@ cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
 ```
-#### Task 1: Obstacle Follower
-##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+### Task 1: Obstacle Follower
+#### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
@@ -47,30 +47,30 @@ cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
 
-##### Terminal 2: Run the task
+#### Terminal 2: Run the task
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_1.launch.py
 ```
 
-#### Task 2: Bug0
+### Task 2: Bug0
 
-##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+#### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 cd /usr/app/comp0244_ws/comp0244-go2/scripts
 ros2 launch robot_launch.launch.py
 ```
-##### Terminal 2: Run the task
+#### Terminal 2: Run the task
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_2.launch.py
 ```
 
-### Terminal 3: Set the goal point
+#### Terminal 3: Set the goal point
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
@@ -78,8 +78,8 @@ ros2 topic pub /goal geometry_msgs/Pose2D "{x: <x>, y: <y>, theta: <theta>}" -r 
 ```
 This is goal point you set.
 
-#### Task 3: Bug1
-##### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
+### Task 3: Bug1
+#### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
@@ -93,7 +93,7 @@ sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_3.launch.py
 ```
-### Terminal 3: Set the goal point
+#### Terminal 3: Set the goal point
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
 source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
