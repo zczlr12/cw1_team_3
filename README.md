@@ -33,7 +33,7 @@ Build the package
 ```bash
 source /opt/ros/humble/setup.bash
 cd /usr/app/comp0244_ws
-cd comp0244-go2/src/livox_ros_driver2 && ./build.sh humble
+cd cw1_team_3/src/livox_ros_driver2 && ./build.sh humble
 cd /usr/app/comp0244_ws/comp0244-go2
 colcon build
 source install/setup.bash
