@@ -33,8 +33,10 @@ Build the package
 ```bash
 source /opt/ros/humble/setup.bash
 cd /usr/app/comp0244_ws
-cd cw1_team_3/src/livox_ros_driver2 && ./build.sh humble
-cd /usr/app/comp0244_ws/comp0244-go2
+cd comp0244-go2_1/src/livox_ros_driver2
+chmod +x build.sh
+./build.sh humble
+cd /usr/app/comp0244_ws/comp0244-go2_1
 colcon build
 source install/setup.bash
 ```
@@ -42,15 +44,15 @@ source install/setup.bash
 #### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-cd /usr/app/comp0244_ws/comp0244-go2/scripts
+source /usr/app/comp0244_ws/comp0244-go2_1/install/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2_1/scripts
 ros2 launch robot_launch.launch.py
 ```
 
 #### Terminal 2: Run the task
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2_1/install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_1.launch.py
 ```
 
@@ -59,21 +61,21 @@ ros2 launch cw1_team_3 run_solution_task_1.launch.py
 #### Terminal 1: Launch Gazebo, SLAM, Waypoint Follower
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
-cd /usr/app/comp0244_ws/comp0244-go2/scripts
+source /usr/app/comp0244_ws/comp0244-go2_1/install/setup.bash
+cd /usr/app/comp0244_ws/comp0244-go2_1/scripts
 ros2 launch robot_launch.launch.py
 ```
 #### Terminal 2: Run the task
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2_1/install/setup.bash
 ros2 launch cw1_team_3 run_solution_task_2.launch.py
 ```
 
 #### Terminal 3: Set the goal point
 ```bash
 sudo docker exec -it comp0244_unitree /bin/bash
-source /usr/app/comp0244_ws/comp0244-go2/install/setup.bash
+source /usr/app/comp0244_ws/comp0244-go2_1/install/setup.bash
 ros2 topic pub /goal geometry_msgs/Pose2D "{x: -2.0, y: 3.0, theta: 0.0}" -r 1
 ```
 This is goal point you set.
